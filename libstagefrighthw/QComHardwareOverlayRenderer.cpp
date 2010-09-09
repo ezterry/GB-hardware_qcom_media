@@ -86,7 +86,9 @@ QComHardwareOverlayRenderer::QComHardwareOverlayRenderer(
 }
 
 QComHardwareOverlayRenderer::~QComHardwareOverlayRenderer() {
-    mISurface->unregisterBuffers();
+    if(mOverlay != NULL)
+        mOverlay->destroy();
+    mMemoryHeap.clear();
 }
 
 void QComHardwareOverlayRenderer::render(
