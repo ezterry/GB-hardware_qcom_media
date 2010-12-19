@@ -63,7 +63,8 @@ typedef struct PLATFORM_PRIVATE_PMEM_INFO
 QComHardwareOverlayRenderer::QComHardwareOverlayRenderer(
         const sp<ISurface> &surface,
         size_t displayWidth, size_t displayHeight,
-        size_t decodedWidth, size_t decodedHeight)
+        size_t decodedWidth, size_t decodedHeight,
+        int32_t rotationDegrees)
     : mISurface(surface),
       mDisplayWidth(displayWidth),
       mDisplayHeight(displayHeight),
@@ -73,13 +74,24 @@ QComHardwareOverlayRenderer::QComHardwareOverlayRenderer(
     CHECK(mISurface.get() != NULL);
     CHECK(mDecodedWidth > 0);
     CHECK(mDecodedHeight > 0);
-    sp<OverlayRef> ref = mISurface->createOverlay(decodedWidth, decodedHeight, OVERLAY_FORMAT_YCrCb_420_SP, ISurface::BufferHeap::ROT_0);
+
+    uint32_t orientation;
+    switch (mRotationDegrees) {
+        case 0: orientation = ISurface::BufferHeap::ROT_0; break;
+        case 90: orientation = ISurface::BufferHeap::ROT_90; break;
+        case 180: orientation = ISurface::BufferHeap::ROT_180; break;
+        case 270: orientation = ISurface::BufferHeap::ROT_270; break;
+        default: orientation = ISurface::BufferHeap::ROT_0; break;
+    }
+
+    sp<OverlayRef> ref = mISurface->createOverlay(decodedWidth, decodedHeight, HAL_PIXEL_FORMAT_YCrCb_420_SP, orientation);
+    
     mOverlay = new Overlay(ref);
     if (mOverlay  == 0){
          LOGE("Create overlay failed\n");
          return;
     }else {
-         LOGV("Create overlay successful\n");
+         LOGI("Create overlay successful\n");
          mFd = 0;
          mOverlay->setCrop(0,0,displayWidth,displayHeight);
     }
@@ -144,7 +156,7 @@ void QComHardwareOverlayRenderer::publishBuffers(uint32_t pmem_fd) {
 
     master.clear();
     mFd = mMemoryHeap->heapID();
-    LOGV("Calling setFd \n");
+    LOGI("Calling setFd \n");
     status_t err =  mOverlay->setFd(mFd);
     CHECK_EQ(err, OK);
 }
