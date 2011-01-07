@@ -34,5 +34,8 @@ ifneq ($(BUILD_TINY_ANDROID),true)
 ifeq ($(TARGET_BOARD_PLATFORM),msm7x30)
     include $(OMX_CORE_PATH)/omxcore/Android.mk
 endif
+ifeq ($(TARGET_BOARD_PLATFORM),msm7k)
+    include $(OMX_CORE_PATH)/omxcore/Android.mk
+endif
 
 endif #BUILD_TINY_ANDROID

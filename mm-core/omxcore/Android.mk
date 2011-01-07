@@ -75,6 +75,7 @@ LOCAL_C_INCLUDES        := $(LOCAL_PATH)/src/common
 LOCAL_C_INCLUDES        += $(LOCAL_PATH)/inc
 LOCAL_MODULE            := libOmxCore
 LOCAL_SHARED_LIBRARIES  := liblog libdl
+LOCAL_MODULE_TAGS       := optional
 LOCAL_CFLAGS            := $(OMXCORE_CFLAGS)
 
 LOCAL_SRC_FILES         := src/common/omx_core_cmp.cpp
@@ -93,6 +94,7 @@ LOCAL_C_INCLUDES        := $(LOCAL_PATH)/src/common
 LOCAL_C_INCLUDES        += $(LOCAL_PATH)/inc
 LOCAL_MODULE            := libmm-omxcore
 LOCAL_SHARED_LIBRARIES  := liblog libdl
+LOCAL_MODULE_TAGS       := optional
 LOCAL_CFLAGS            := $(OMXCORE_CFLAGS)
 
 LOCAL_SRC_FILES         := src/common/omx_core_cmp.cpp
